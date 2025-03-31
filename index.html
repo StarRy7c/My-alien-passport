@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Passport Generator 🪐</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?space,galaxy') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #00ffcc;
+        }
+
+        input, select {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(0, 255, 204, 0.1);
+            color: white;
+            width: 250px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: linear-gradient(45deg, #00ffcc, #ff00ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        .passport-container {
+            margin-top: 50px;
+            display: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            width: 300px;
+            text-align: left;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .passport-header {
+            background: linear-gradient(45deg, #ff00ff, #00ffcc);
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .passport-content {
+            padding: 20px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .passport-footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.9rem;
+            color: #ffcc00;
+        }
+
+        .star-rating {
+            color: gold;
+        }
+
+        .flag {
+            width: 30px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .passport-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .download-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Galactic Passport Generator 🪐</h1>
+    <p>Enter your details to receive your personalized alien passport!</p>
+
+    <form id="passportForm">
+        <input type="text" id="name" placeholder="Name" required><br>
+        <input type="number" id="age" placeholder="Age" required><br>
+        <input type="text" id="planet" placeholder="Planet of Origin" required><br>
+        <input type="text" id="activity" placeholder="Favorite Space Activity" required><br>
+        <input type="text" id="alienID" placeholder="Unique Alien ID" required><br>
+        <select id="planetFlag">
+            <option value="https://www.countryflags.io/gb/flat/64.png">Earth Flag</option>
+            <option value="https://www.countryflags.io/mx/flat/64.png">Mars Flag</option>
+            <option value="https://www.countryflags.io/ca/flat/64.png">Venus Flag</option>
+        </select><br>
+        <button type="submit">Generate Passport</button>
+    </form>
+
+    <div class="passport-container" id="passport">
+        <div class="passport-header">
+            Galactic Passport
+        </div>
+        <div class="passport-content">
+            <p><strong>Name:</strong> <span id="passportName"></span></p>
+            <p><strong>Age:</strong> <span id="passportAge"></span></p>
+            <p><strong>Planet of Origin:</strong> <span id="passportPlanet"></span></p>
+            <p><strong>Favorite Activity:</strong> <span id="passportActivity"></span></p>
+            <p><strong>Alien ID:</strong> <span id="passportAlienID"></span></p>
+            <p><strong>Planet Flag:</strong> <img id="passportFlag" class="flag" alt="Planet Flag"></p>
+            <p><strong>Space Travel Rating:</strong> <span id="passportRating" class="star-rating">⭐⭐⭐⭐</span></p>
+        </div>
+        <div class="passport-footer">
+            <button class="download-button" id="downloadBtn">Download Passport</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('passportForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const planet = document.getElementById('planet').value;
+        const activity = document.getElementById('activity').value;
+        const alienID = document.getElementById('alienID').value;
+        const planetFlag = document.getElementById('planetFlag').value;
+
+        // Update passport with user inputs
+        document.getElementById('passportName').textContent = name;
+        document.getElementById('passportAge').textContent = age;
+        document.getElementById('passportPlanet').textContent = planet;
+        document.getElementById('passportActivity').textContent = activity;
+        document.getElementById('passportAlienID').textContent = alienID;
+        document.getElementById('passportFlag').src = planetFlag;
+
+        // Display passport
+        document.getElementById('passport').style.display = 'block';
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const passportContent = document.getElementById('passport');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = passportContent.offsetWidth;
+        canvas.height = passportContent.offsetHeight;
+        ctx.drawImage(passportContent, 0, 0);
+
+        const dataURL = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'galactic_passport.png';
+        link.click();
+    });
+</script>
+
+</body>
+</html>
